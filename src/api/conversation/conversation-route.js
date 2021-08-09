@@ -1,22 +1,22 @@
 import Router from 'express'
 import validate from 'express-validation'
-import controller from './account-controller.js'
+import controller from './conversation-controller.js'
 import asyncHandler from '../../common/async-handler.js'
 import validateContentType from '../../middleware/validateContentType.js'
-import validation from './account-validation.js'
+import validation from './conversation-validation.js'
 import { MAP_ROLE } from '../../common/constant/index.js'
 import permission from '../../middleware/permission.js'
+import checkUserAndRoomExist from '../../middleware/checkUserAndRoomExist.js'
 
 const router = Router()
-
 /**
  * @swagger
  *
- * /account/sign_in:
+ * /conversation/create:
  *   post:
- *     description: Sign in.
+ *     description: Create room.
  *     tags:
- *     - Account
+ *     - Conversation
  *     requestBody:
  *      required: true
  *      content:
@@ -24,8 +24,8 @@ const router = Router()
  *          schema:
  *            type: object
  *            example:
- *              username: a
- *              password: a
+ *              name: a
+ *              is_vip: false
  *     security:
  *     - bearerAuth: []
  *     responses:
@@ -56,83 +56,28 @@ const router = Router()
  *
  */
 router
-  .route('/sign_in')
+  .route('/create')
   .post(
+    permission.allowRole(MAP_ROLE.ADMIN),
     validateContentType,
-    validate(validation.signIn),
-    asyncHandler(controller.signIn)
+    validate(validation.createRoom),
+    asyncHandler(controller.createRoom)
   )
-
 /**
  * @swagger
  *
- * /account/sign_up:
- *   post:
- *     description: Sign up.
- *     tags:
- *     - Account
- *     requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            example:
- *              username: a
- *              password: a
- *              phone_number: 1
- *     security:
- *     - bearerAuth: []
- *     responses:
- *       200:
- *         description: Success
- *         content:
- *          application/json:
- *            schema:
- *              type: object
- *              example:
- *                token: 1
- *       400:
- *         description: Bad Request
- *         content:
- *          application/json:
- *            schema:
- *              type: object
- *              example:
- *                message: 'Bad request'
- *       500:
- *         description: Internal Server error
- *         content:
- *          application/json:
- *            schema:
- *              type: object
- *              example:
- *                message: 'Internal Server error'
- *
- */
-router
-  .route('/sign_up')
-  .post(
-    validateContentType,
-    validate(validation.signUp),
-    asyncHandler(controller.signUp)
-  )
-
-/**
- * @swagger
- *
- * /account/change_role/{id}:
+ * /conversation/add_user/{id}:
  *   put:
- *     description: Change user role.
+ *     description: Add user to a room.
  *     tags:
- *     - Account
+ *     - Conversation
  *     parameters:
- *     - name: id
- *       description: Id of company user
- *       in: path
- *       type: string
- *       format: uuid
- *       required: true
+ *      - name: "id"
+ *        in: "path"
+ *        description: "id"
+ *        schema:
+ *          type: "string"
+ *          required: true
  *     requestBody:
  *      required: true
  *      content:
@@ -140,7 +85,7 @@ router
  *          schema:
  *            type: object
  *            example:
- *              role: USER
+ *              user_id: a
  *     security:
  *     - bearerAuth: []
  *     responses:
@@ -171,11 +116,12 @@ router
  *
  */
 router
-  .route('/change_role/:id')
+  .route('/add_user/:id')
   .put(
-    permission.allowRole(MAP_ROLE.USER),
+    permission.allowRole(MAP_ROLE.ADMIN),
     validateContentType,
-    validate(validation.changeRole),
-    asyncHandler(controller.changeRole)
+    validate(validation.addUserToRoom),
+    checkUserAndRoomExist,
+    asyncHandler(controller.addUserToRoom)
   )
 export default router

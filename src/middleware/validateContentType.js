@@ -11,7 +11,7 @@ const validateContentType = (req, res, next) => {
   const path = req.originalUrl
   const objParam = req.params
   const objBody = req.body
-  if (req.method === 'PUT') {
+  if (req.method === 'POST') {
     if (
       !req.is('application/json') &&
       (Object.keys(objParam).length === 0 || Object.keys(objBody).length === 0)
@@ -26,8 +26,8 @@ const validateContentType = (req, res, next) => {
     }
   }
 
-  if (req.method === 'POST') {
-    if (path.indexOf('/photo') === 0 || path.indexOf('/photo/v1') === 0) {
+  if (req.method === 'PUT') {
+    if (path.indexOf('/user') === 0) {
       const contentType = req.headers['content-type']
       if (!contentType) {
         check = false

@@ -29,9 +29,11 @@ const signUp = {
 
 const changeRole = {
   params: {
-    id: Joi.string().guid({
-      version: ['uuidv4'],
-    }),
+    id: Joi.string()
+      .guid({
+        version: ['uuidv4'],
+      })
+      .required(),
   },
   body: {
     role: Joi.string()

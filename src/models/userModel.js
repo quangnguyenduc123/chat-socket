@@ -1,12 +1,11 @@
 import Sequelize from 'sequelize'
 import sequelizeInstance from '../common/squelize.js'
 
-const userModel = sequelizeInstance.define('user', {
+const userModel = sequelizeInstance.define('users', {
   id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     field: 'id',
     primaryKey: true,
-    autoIncrement: true,
   },
   role: {
     type: Sequelize.STRING,
@@ -17,6 +16,8 @@ const userModel = sequelizeInstance.define('user', {
   userName: {
     type: Sequelize.STRING,
     field: 'username',
+    allowNull: false,
+    unique: true,
   },
   passWord: {
     type: Sequelize.STRING,
@@ -27,6 +28,11 @@ const userModel = sequelizeInstance.define('user', {
     type: Sequelize.STRING,
     field: 'phone_number',
     allowNull: false,
+  },
+  url: {
+    type: Sequelize.STRING,
+    field: 'url',
+    allowNull: true,
   },
 })
 

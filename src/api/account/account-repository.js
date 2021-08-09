@@ -14,7 +14,7 @@ const insertUser = async user => {
 }
 
 const changeRole = async (id, role) => {
-  const query = `UPDATE public.user SET role = :role where id = :id`
+  const query = `UPDATE public.users SET role = :role where id = :id`
   return sequelize.query(query, {
     replacements: {
       role,

@@ -2,8 +2,8 @@
  * User roles
  */
 export const USER_ROLES = {
-  ROLE_ADMIN: 'ADMIN',
-  ROLE_END_USER: 'USER',
+  ADMIN: 'ADMIN',
+  USER: 'USER',
 }
 
 export const MAP_AUTHORITY = Object.freeze({
@@ -16,3 +16,8 @@ export const MAP_ROLE = Object.freeze({
 })
 
 export const LIST_AUTHORITY = [MAP_AUTHORITY.USER, MAP_AUTHORITY.ADMIN]
+
+export const COLLECTION_TYPE = Object.freeze({
+  CONVERSATION: 'CONVERSATION',
+  PROFILE: 'PROFILE',
+})

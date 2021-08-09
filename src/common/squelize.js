@@ -23,7 +23,7 @@ const sequelize = new Sequelize(
       freezeTableName: true,
       charset: 'utf8',
       dialectOptions: {
-        useUTC: false, // for reading from database
+        useUTC: false,
         dateStrings: true,
         typeCast: true,
       },
